@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio | Creative Developer</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #121212;
+    --orange: #FF8C00;
+    --purple: #8A2BE2;
+    --card: #1e1e1e;
+    --border: #2a2a2a;
+    --text: #e0e0e0;
+    --muted: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 3px; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(18,18,18,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-size: 1.3rem; font-weight: 900; background: linear-gradient(135deg, var(--orange), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-links a { color: var(--muted); text-decoration: none; margin-left: 2rem; font-size: .9rem; transition: color .3s; }
+  .nav-links a:hover { color: var(--orange); }
+  .hamburger { display: none; cursor: pointer; color: var(--text); font-size: 1.4rem; }
+  .mobile-menu { display: none; flex-direction: column; gap: 1rem; padding: 1rem 2rem; border-top: 1px solid var(--border); }
+  .mobile-menu a { color: var(--muted); text-decoration: none; font-size: 1rem; transition: color .3s; }
+  .mobile-menu a:hover { color: var(--orange); }
+  .mobile-menu.open { display: flex; }
+
+  /* HERO */
+  #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 6rem 2rem 4rem; position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(138,43,226,.15) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(255,140,0,.12) 0%, transparent 60%); pointer-events: none; }
+  .grid-overlay { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,140,0,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,140,0,.03) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
+
+  /* Keywords */
+  .keywords { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem; }
+  .keyword { font-size: clamp(2.2rem, 6vw, 4.5rem); font-weight: 900; line-height: 1; }
+  .kw-1 { color: var(--orange); text-shadow: 0 0 40px rgba(255,140,0,.4); }
+  .kw-2 { color: var(--purple); text-shadow: 0 0 40px rgba(138,43,226,.4); }
+  .kw-3 { color: var(--text); }
+  .kw-dot { color: var(--orange); font-size: clamp(2rem, 5vw, 4rem); }
+
+  /* Vision */
+  .hero-vision { font-size: clamp(.95rem, 2.2vw, 1.2rem); color: var(--muted); max-width: 560px; line-height: 1.9; margin-bottom: 2rem; }
+  .hero-vision span { color: var(--orange); font-weight: 700; }
+
+  /* Mini Tech Icons */
+  .mini-tech { display: flex; gap: .9rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.6rem; }
+  .mini-tech-item { display: flex; flex-direction: column; align-items: center; gap: .35rem; color: var(--muted); font-size: .68rem; cursor: default; transition: all .3s; }
+  .mini-tech-item i { font-size: 1.4rem; transition: all .3s; }
+  .mini-tech-item:hover { color: var(--orange); }
+  .mini-tech-item:hover i { text-shadow: 0 0 14px var(--orange); color: var(--orange); transform: translateY(-2px); }
+
+  /* Cert List */
+  .cert-list { display: flex; gap: .6rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem; }
+  .cert-item { display: flex; align-items: center; gap: .45rem; padding: .35rem .9rem; border: 1px solid var(--border); border-radius: 50px; background: rgba(255,140,0,.05); font-size: .75rem; color: var(--muted); transition: all .3s; }
+  .cert-item i { color: var(--orange); font-size: .8rem; }
+  .cert-item:hover { border-color: var(--orange); color: var(--text); background: rgba(255,140,0,.1); }
+
+  /* Social */
+  .social-links { display: flex; gap: 1rem; justify-content: center; }
+  .social-btn { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--muted); text-decoration: none; transition: all .3s; font-size: 1.05rem; }
+  .social-btn:hover { border-color: var(--orange); color: var(--orange); box-shadow: 0 0 16px rgba(255,140,0,.4); transform: translateY(-3px); }
+
+  /* SECTION COMMON */
+  .section-title { font-size: 2rem; font-weight: 900; margin-bottom: .5rem; }
+  .section-line { width: 60px; height: 3px; background: linear-gradient(90deg, var(--orange), var(--purple)); border-radius: 2px; margin-bottom: 3rem; }
+
+  /* PROJECTS */
+  #projects { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+  .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+  .project-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; cursor: pointer; transition: all .3s; }
+  .project-card:hover { border-color: var(--orange); transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,.4), 0 0 30px rgba(255,140,0,.1); }
+  .card-thumb { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform .4s; }
+  .project-card:hover .card-thumb { transform: scale(1.05); }
+  .card-thumb-wrap { overflow: hidden; position: relative; }
+  .card-badge { position: absolute; top: 1rem; left: 1rem; background: rgba(255,140,0,.9); color: #fff; font-size: .7rem; font-weight: 700; padding: .25rem .7rem; border-radius: 50px; }
+  .card-body { padding: 1.5rem; }
+  .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; color: #fff; }
+  .card-desc { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1rem; }
+  .tag { font-size: .7rem; padding: .2rem .6rem; border-radius: 50px; border: 1px solid var(--border); color: var(--muted); }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.8); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; pointer-events: none; transition: opacity .3s; }
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+  .modal-box { background: #1a1a1a; border: 1px solid var(--border); border-radius: 20px; max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; transform: scale(.95); transition: transform .3s; }
+  .modal-overlay.active .modal-box { transform: scale(1); }
+  .modal-img { width: 100%; height: 240px; object-fit: cover; border-radius: 20px 20px 0 0; }
+  .modal-body { padding: 2rem; }
+  .modal-title { font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 1rem; }
+  .modal-desc { color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; }
+  .modal-label { font-size: .75rem; font-weight: 700; color: var(--orange); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .6rem; }
+  .modal-stack { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+  .modal-tag { background: rgba(255,140,0,.1); border: 1px solid rgba(255,140,0,.3); color: var(--orange); font-size: .8rem; padding: .3rem .8rem; border-radius: 50px; }
+  .modal-feats { list-style: none; margin-bottom: 1.5rem; }
+  .modal-feats li { color: var(--muted); font-size: .9rem; padding: .4rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: .6rem; }
+  .modal-feats li::before { content: '▸'; color: var(--orange); }
+  .modal-footer { display: flex; gap: 1rem; }
+  .btn-primary { display: inline-flex; align-items: center; gap: .5rem; padding: .7rem 1.4rem; background: linear-gradient(135deg, var(--orange), #ff6500); color: #fff; border-radius: 50px; font-weight: 700; font-size: .9rem; text-decoration: none; border: none; cursor: pointer; transition: all .3s; }
+  .btn-primary:hover { box-shadow: 0 0 20px rgba(255,140,0,.5); transform: translateY(-2px); }
+  .btn-ghost { display: inline-flex; align-items: center; gap: .5rem; padding: .7rem 1.4rem; border: 1px solid var(--border); color: var(--muted); border-radius: 50px; font-size: .9rem; text-decoration: none; cursor: pointer; background: transparent; transition: all .3s; }
+  .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+  .modal-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,.1); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1rem; transition: background .3s; }
+  .modal-close:hover { background: var(--orange); }
+  .modal-box-inner { position: relative; }
+
+  /* TIMELINE */
+  #experience { padding: 5rem 2rem; max-width: 900px; margin: 0 auto; }
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--orange), var(--purple)); border-radius: 2px; }
+  .tl-item { position: relative; padding: 0 0 3rem 2rem; }
+  .tl-dot { position: absolute; left: -2.4rem; top: .35rem; width: 14px; height: 14px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 12px var(--orange); border: 2px solid var(--bg); }
+  .tl-item:nth-child(even) .tl-dot { background: var(--purple); box-shadow: 0 0 12px var(--purple); }
+  .tl-date { font-size: .75rem; color: var(--orange); font-weight: 700; letter-spacing: .1em; margin-bottom: .4rem; }
+  .tl-item:nth-child(even) .tl-date { color: var(--purple); }
+  .tl-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: .3rem; }
+  .tl-org { font-size: .85rem; color: var(--muted); margin-bottom: .6rem; }
+  .tl-desc { font-size: .85rem; color: var(--muted); line-height: 1.7; }
+  .tl-badge { display: inline-block; font-size: .7rem; padding: .2rem .7rem; border-radius: 50px; margin-bottom: .7rem; }
+  .badge-orange { background: rgba(255,140,0,.15); color: var(--orange); border: 1px solid rgba(255,140,0,.3); }
+  .badge-purple { background: rgba(138,43,226,.15); color: var(--purple); border: 1px solid rgba(138,43,226,.3); }
+  .badge-blue { background: rgba(59,130,246,.15); color: #60a5fa; border: 1px solid rgba(59,130,246,.3); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 3rem 2rem; text-align: center; color: var(--muted); font-size: .85rem; }
+  footer span { color: var(--orange); }
+
+  /* ANIMATIONS */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* Divider */
+  .hero-divider { width: 40px; height: 1px; background: var(--border); margin: 1.4rem auto; }
+
+  @media(max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: block; }
+    .keywords { gap: .8rem; }
+    .project-grid { grid-template-columns: 1fr; }
+    .timeline { padding-left: 1.5rem; }
+    .tl-item { padding-left: 1.5rem; }
+    .tl-dot { left: -2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">이수민</div>
+    <div class="nav-links">
+      <a href="#hero">소개</a>
+      <a href="#projects">프로젝트</a>
+      <a href="#experience">경험</a>
+    </div>
+    <div class="hamburger" onclick="toggleMenu()"><i class="fa fa-bars"></i></div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#hero" onclick="toggleMenu()">소개</a>
+    <a href="#projects" onclick="toggleMenu()">프로젝트</a>
+    <a href="#experience" onclick="toggleMenu()">경험</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- Keywords -->
+  <div class="keywords fade-up">
+    <span class="keyword kw-1">#도전적인</span>
+    <span class="kw-dot">·</span>
+    <span class="keyword kw-2">#소통하는</span>
+    <span class="kw-dot">·</span>
+    <span class="keyword kw-3">#탐구하는</span>
+  </div>
+
+  <!-- Vision -->
+  <p class="hero-vision fade-up" style="transition-delay:.1s">
+    학생들이 AI를 쉽고 재미있게  배우며<br>
+    스스로 활용할 수 있도록 돕는<br>
+    <span>AI 교육자 이수민</span>입니다.
+  </p>
+
+  <!-- Mini Tech Icons -->
+  <div class="mini-tech fade-up" style="transition-delay:.18s">
+    <div class="mini-tech-item"><i class="fab fa-google" style="color:#4285F4"></i><span>Google</span></div>
+    <div class="mini-tech-item"><i class="fab fa-microsoft" style="color:#00A4EF"></i><span>Microsoft</span></div>
+    <div class="mini-tech-item"><i class="fab fa-slack" style="color:#4A154B"></i><span>Slack</span></div>
+    <div class="mini-tech-item"><i class="fab fa-confluence" style="color:#0052CC"></i><span>Confluence</span></div>
+    <div class="mini-tech-item"><i class="fab fa-github" style="color:#FFFFFF"></i><span>GitHub</span></div>
+
+  </div>
+
+  <!-- Cert List -->
+  <div class="cert-list fade-up" style="transition-delay:.26s">
+    <div class="cert-item"><i class="fas fa-certificate"></i> ISTQB</div>
+    <div class="cert-item"><i class="fas fa-certificate"></i> Google·Gemini Certified Educator </div>
+    <div class="cert-item"><i class="fas fa-award"></i> 25' AIC 최우수상</div>
+    <div class="cert-item"><i class="fas fa-award"></i> 25' KRC Reach Award 1등</div>
+  </div>
+
+  <!-- Social -->
+  <div class="social-links fade-up" style="transition-delay:.34s">
+<!--    <a href="#" class="social-btn" title="GitHub"><i class="fab fa-github"></i></a> -->
+<!--    <a href="#" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a> -->
+<!--    <a href="#" class="social-btn" title="KakaoTalk"><i class="fas fa-comment"></i></a> -->
+    <a href="#" class="social-btn" title="Email"><i class="fas fa-envelope"></i></a>
+    <a href="#" class="social-btn" title="Phone"><i class="fas fa-phone"></i></a>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="max-width:1200px;margin:0 auto;padding:5rem 2rem;">
+  <div class="fade-up">
+    <h2 class="section-title">프로젝트</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="project-grid" id="projectGrid"></div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" style="max-width:900px;margin:0 auto;padding:5rem 2rem;">
+  <div class="fade-up">
+    <h2 class="section-title">경험</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="timeline fade-up" style="transition-delay:.1s">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2025 — 현재</div>
+      <span class="tl-badge badge-orange">동아리</span>
+      <div class="tl-title">A.I.R. 로봇코딩 동아리 지도교사(보조)</div>
+      <div class="tl-org">방교중학교</div>
+      <div class="tl-desc">2025 KRC Reach Award 1등🥇. 2025 AIC 최우수상🏆. 팀원들의 기술 성장을 위한 가이드 및 멘토링 진행.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2025 — 현재</div>
+      <span class="tl-badge badge-purple">업무</span>
+      <div class="tl-title">AI 강사</div>
+      <div class="tl-org">한국폴리텍대학 화성캠퍼스</div>
+      <div class="tl-desc">AI 리터러시, AI 윤리, AI와 미래사회, AI 소프트웨어활용.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2025 — 현재</div>
+      <span class="tl-badge badge-blue">업무</span>
+      <div class="tl-title">디지털튜터</div>
+      <div class="tl-org">방교중학교</div>
+      <div class="tl-desc">디지털튜터 양성 프로그램 이수. (2025 한국과학창의재단)</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2014 — 2021</div>
+      <span class="tl-badge badge-orange">업무</span>
+      <div class="tl-title">Software System Test</div>
+      <div class="tl-org">외국계 자동차 부품 회사</div>
+      <div class="tl-desc">Software system test manager and architect. ASPICE. Kanban. A3 problem solving.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">2006 — 2012</div>
+      <span class="tl-badge badge-blue">교육</span>
+      <div class="tl-title">전자공학 전공</div>
+      <div class="tl-org">○○ 대학교</div>
+      <div class="tl-desc">전기전자컴퓨터공학부·전자공학 전공. GPA X.X/4.5.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Designed & Built with by <span>이수민</span></p>
+  <p style="margin-top:.5rem">© 2026 All rights reserved.</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOut(event)">
+  <div class="modal-box">
+    <div class="modal-box-inner">
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      <img id="modalImg" class="modal-img" src="" alt="">
+      <div class="modal-body">
+        <div class="tl-badge badge-orange" id="modalBadge"></div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-desc" id="modalDesc"></div>
+        <div class="modal-label">기술 스택</div>
+        <div class="modal-stack" id="modalStack"></div>
+        <div class="modal-label">주요 기능</div>
+        <ul class="modal-feats" id="modalFeats"></ul>
+        <div class="modal-footer">
+          <a href="#" class="btn-primary"><i class="fab fa-github"></i> GitHub</a>
+          <button class="btn-ghost" onclick="closeModal()"><i class="fas fa-times"></i> 닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const projects = [
+  { title:"AI 학습 플래너", badge:"AI / Web App", desc:"GPT API를 활용한 개인 맞춤형 학습 계획 생성 플랫폼. 사용자의 목표와 스케줄을 분석하여 최적의 커리큘럼을 자동으로 생성.", img:"https://picsum.photos/seed/flower1/600/400", tags:["React","Node.js","OpenAI"], longDesc:"GPT-4를 백엔드에서 활용하여 사용자 맞춤형 학습 플랜을 생성하는 웹 서비스입니다. 사용자의 목표, 현재 수준, 가용 시간을 입력받아 주간 커리큘럼과 리소스를 자동 추천합니다.", stack:["React","TypeScript","Node.js","Express","OpenAI API","MongoDB"], features:["GPT-4 기반 커리큘럼 자동 생성","진도 트래킹 및 시각화 대시보드","소셜 로그인 (Google, GitHub)","학습 통계 주간 레포트 이메일 발송"] },
+  { title:"팀 협업 칸반보드", badge:"SaaS", desc:"드래그 앤 드롭 기반의 칸반 보드로 팀 프로젝트를 효율적으로 관리. 실시간 협업과 알림 기능을 지원.", img:"https://kukka-2-media-123.s3.amazonaws.com/media/contents/event_template/ad8e0cd7-f025-4ce5-be03-4f3bd118e5f2.jpg", tags:["React","Socket.io","PostgreSQL"], longDesc:"Trello에서 영감을 받아 개발한 팀 협업 도구입니다. WebSocket을 통한 실시간 동기화로 여러 팀원이 동시에 보드를 편집해도 즉시 반영됩니다.", stack:["React","Redux","Socket.io","Node.js","PostgreSQL","Docker"], features:["드래그 앤 드롭 카드 관리","실시간 WebSocket 동기화","멤버 초대 및 권한 관리","카드별 댓글 및 파일 첨부"] },
+  { title:"개인 블로그 CMS", badge:"Full Stack", desc:"마크다운 기반의 자체 제작 블로그 플랫폼. SEO 최적화와 다크모드를 지원하며 Vercel에 배포.", img:"image/대회.jpg", tags:["Next.js","MDX","Tailwind"], longDesc:"Next.js App Router와 MDX를 활용한 정적 블로그 플랫폼입니다. 마크다운으로 글을 작성하면 자동으로 빌드되어 배포되는 JAMStack 아키텍처로 구성했습니다.", stack:["Next.js 14","MDX","Tailwind CSS","Vercel","Contentlayer"], features:["MDX 기반 콘텐츠 관리","코드 하이라이팅 (Shiki)","자동 OG 이미지 생성","Lighthouse 점수 100점 최적화"] },
+];
+
+const grid = document.getElementById('projectGrid');
+projects.forEach((p, i) => {
+  const card = document.createElement('div');
+  card.className = 'project-card fade-up';
+  card.style.transitionDelay = `${i * 0.08}s`;
+  card.innerHTML = `
+    <div class="card-thumb-wrap">
+      <img class="card-thumb" src="${p.img}" alt="${p.title}" loading="lazy">
+      <span class="card-badge">${p.badge}</span>
+    </div>
+    <div class="card-body">
+      <div class="card-title">${p.title}</div>
+      <div class="card-desc">${p.desc}</div>
+      <div class="card-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    </div>`;
+  card.onclick = () => openModal(i);
+  grid.appendChild(card);
+});
+
+function openModal(i) {
+  const p = projects[i];
+  document.getElementById('modalImg').src = p.img;
+  document.getElementById('modalBadge').textContent = p.badge;
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalDesc').textContent = p.longDesc;
+  document.getElementById('modalStack').innerHTML = p.stack.map(s=>`<span class="modal-tag">${s}</span>`).join('');
+  document.getElementById('modalFeats').innerHTML = p.features.map(f=>`<li>${f}</li>`).join('');
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+function closeModalOut(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
