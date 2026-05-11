@@ -317,9 +317,11 @@ function handleEmail(e) {
   e.preventDefault();
   const email = 'sm20250@goedu.kr';
   if (isMobile) {
-    window.location.href = `mailto:${email}`;
+    showToast(`📧 메일 앱 연결 중...`);
+    setTimeout(() => { window.location.href = `mailto:${email}`; }, 400);
   } else {
-    navigator.clipboard.writeText(email).then(() => showToast(`📋 ${email} 복사됨`));
+    showToast(`📋 ${email} 복사됨`);
+    setTimeout(() => { navigator.clipboard.writeText(email); }, 400);
   }
 }
 
@@ -327,9 +329,11 @@ function handlePhone(e) {
   e.preventDefault();
   const phone = '010-1234-5678';
   if (isMobile) {
-    window.location.href = `tel:${phone.replace(/-/g, '')}`;
+    showToast(`📞 전화 연결 중...`);
+    setTimeout(() => { window.location.href = `tel:${phone.replace(/-/g, '')}`; }, 400);
   } else {
-    navigator.clipboard.writeText(phone).then(() => showToast(`📋 ${phone} 복사됨`));
+    showToast(`📋 ${phone} 복사됨`);
+    setTimeout(() => { navigator.clipboard.writeText(phone); }, 400);
   }
 }
 
