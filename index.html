@@ -70,6 +70,7 @@
   .social-links { display: flex; gap: 1rem; justify-content: center; }
   .social-btn { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--muted); text-decoration: none; transition: all .3s; font-size: 1.05rem; }
   .social-btn:hover { border-color: var(--orange); color: var(--orange); box-shadow: 0 0 16px rgba(255,140,0,.4); transform: translateY(-3px); }
+  .social-btn.touched {  border-color: var(--orange); color: var(--orange); box-shadow: 0 0 16px rgba(255,140,0,.4); transform: translateY(-3px); transition: all .15s ease;}
 
   /* SECTION COMMON */
   .section-title { font-size: 2rem; font-weight: 900; margin-bottom: .5rem; }
@@ -215,7 +216,7 @@
   <!-- Social -->
   <div class="social-links fade-up" style="transition-delay:.34s">
 <!--    <a href="#" class="social-btn" title="GitHub"><i class="fab fa-github"></i></a> -->
-    <a href="https://instagram.com/air._.official" target="_blank" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="#" class="social-btn" title="Instagram" onclick="handleInstagram(event)"><i class="fab fa-instagram"></i></a>
 <!--    <a href="#" class="social-btn" title="KakaoTalk"><i class="fas fa-comment"></i></a> -->
     <a href="#" class="social-btn" title="Email" onclick="handleEmail(event)"><i class="fas fa-envelope"></i></a>
     <a href="#" class="social-btn" title="Phone" onclick="handlePhone(event)"><i class="fas fa-phone"></i></a>
@@ -313,28 +314,46 @@
 
 const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
+function triggerThenAct(el, action) {
+  el.classList.add('touched');
+  setTimeout(() => {
+    action();
+    setTimeout(() => el.classList.remove('touched'), 400);
+  }, 150); // 150ms 애니메이션 후 동작
+}
+
+function handleInstagram(e) {
+  e.preventDefault();
+  const el = e.currentTarget;
+  triggerThenAct(el, () => {
+    window.open('https://instagram.com/air._.official', '_blank');
+  });
+}
+
 function handleEmail(e) {
   e.preventDefault();
+  const el = e.currentTarget;
   const email = 'sm20250@goedu.kr';
-  if (isMobile) {
-    showToast(`📧 메일 앱 연결 중...`);
-    setTimeout(() => { window.location.href = `mailto:${email}`; }, 400);
-  } else {
-    showToast(`📋 ${email} 복사됨`);
-    setTimeout(() => { navigator.clipboard.writeText(email); }, 400);
-  }
+  triggerThenAct(el, () => {
+    if (isMobile) {
+      window.location.href = `mailto:${email}`;
+    } else {
+      navigator.clipboard.writeText(email).then(() => showToast(`${email} 복사됨`));
+    }
+  });
 }
 
 function handlePhone(e) {
   e.preventDefault();
+  const el = e.currentTarget;
   const phone = '010-1234-5678';
-  if (isMobile) {
-    showToast(`📞 전화 연결 중...`);
-    setTimeout(() => { window.location.href = `tel:${phone.replace(/-/g, '')}`; }, 400);
-  } else {
-    showToast(`📋 ${phone} 복사됨`);
-    setTimeout(() => { navigator.clipboard.writeText(phone); }, 400);
-  }
+  triggerThenAct(el, () => {
+    if (isMobile) {
+      window.location.href = `tel:${phone.replace(/-/g, '')}`;
+    } else {
+      navigator.clipboard.writeText(phone).then(() => showToast(`📋 ${phone} 복사됨`));
+    }
+  });
 }
 
 function showToast(msg) {
